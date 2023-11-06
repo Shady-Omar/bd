@@ -1,6 +1,6 @@
 import "../styles.css";
 import { useState } from "react";
-import QrReader from "react-qr-reader";
+import {QrReader} from "react-qr-reader";
 
 const QRCodeScanner = () => {
   const [selected, setSelected] = useState("environment");
