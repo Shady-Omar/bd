@@ -1,58 +1,59 @@
-import { Html5QrcodeScanner } from "html5-qrcode";
-import React, { useEffect, useRef } from 'react';
+import React, { useState } from "react";
+import {QrReader} from "react-qr-reader";
 
-const qrcodeRegionId = "html5qr-code-full-region";
+const QRCodeScanner = () => {
+  const [selected, setSelected] = useState("environment");
+  const [startScan, setStartScan] = useState(false);
+  const [loadingScan, setLoadingScan] = useState(false);
+  const [data, setData] = useState("");
 
-function Html5QrcodePlugin(props) {
-    const html5QrcodeScannerRef = useRef(null);
+  const handleScan = async (scanData) => {
+    setLoadingScan(true);
+    console.log(`loaded data data`, scanData);
+    if (scanData && scanData !== "") {
+      console.log(`loaded >>>`, scanData);
+      setData(scanData);
+      setStartScan(false);
+      setLoadingScan(false);
+      // setPrecScan(scanData);
+    }
+  };
 
-    useEffect(() => {
-        function createConfig(props) {
-            const config = {};
-            if (props.fps) {
-                config.fps = props.fps;
-            }
-            if (props.qrbox) {
-                config.qrbox = props.qrbox;
-            }
-            if (props.aspectRatio) {
-                config.aspectRatio = props.aspectRatio;
-            }
-            if (props.disableFlip !== undefined) {
-                config.disableFlip = props.disableFlip;
-            }
-            return config;
-        }
+  const handleError = (err) => {
+    console.error(err);
+  };
 
-        const config = createConfig(props);
-        const verbose = props.verbose === true;
+  return (
+    <div className="App">
+      <h1>Hello CodeSandbox</h1>
+      <h2>Last Scan: {selected}</h2>
 
-        // Success callback is required.
-        if (!props.qrCodeSuccessCallback) {
-            throw new Error("qrCodeSuccessCallback is a required callback.");
-        }
+      <button
+        onClick={() => {
+          setStartScan(!startScan);
+        }}
+      >
+        {startScan ? "Stop Scan" : "Start Scan"}
+      </button>
+      {startScan && (
+        <>
+          <select onChange={(e) => setSelected(e.target.value)}>
+            <option value={"environment"}>Back Camera</option>
+            <option value={"user"}>Front Camera</option>
+          </select>
+          <QrReader
+            facingMode={selected}
+            delay={1000}
+            onError={handleError}
+            onScan={handleScan}
+            style={{ width: "300px" }}
+          />
+        </>
+      )}
+      {loadingScan && <p>Loading</p>}
+      {data !== "" && <p>{data}</p>}
+    </div>
+  );
+};
 
-        html5QrcodeScannerRef.current = new Html5QrcodeScanner(
-            qrcodeRegionId,
-            config,
-            verbose
-        );
-        html5QrcodeScannerRef.current.render(
-            props.qrCodeSuccessCallback,
-            props.qrCodeErrorCallback
-        );
-
-        return () => {
-            // componentWillUnmount logic
-            if (html5QrcodeScannerRef.current) {
-                html5QrcodeScannerRef.current.clear().catch(error => {
-                    console.error("Failed to clear html5QrcodeScanner. ", error);
-                });
-            }
-        };
-    }, []);
-
-    return <div id={qrcodeRegionId} />;
-}
-
-export default Html5QrcodePlugin;
+export default QRCodeScanner;

@@ -1,14 +1,9 @@
-import React, { useCallback } from 'react';
+import React from "react";
 import Logo from '../assets/logo.svg'
-// import QRCodeScanner from '../Components/QRCodeScanner';
-import Html5QrcodePlugin from "../Components/QRCodeScanner";
-
+import QRCodeScanner from '../Components/QRCodeScanner';
 
 function HomePage() {
   
-  const onNewScanResult = useCallback((decodedText, decodedResult) => {
-    // Handle the result here.
-}, []);
 
   return (
     <div className="flex justify-center w-full text-[#212529]">
@@ -31,12 +26,7 @@ function HomePage() {
         </form>
 
         {/* QR Code Scanner: */}
-        <Html5QrcodePlugin
-          fps={10}
-          qrbox={250}
-          disableFlip={false}
-          qrCodeSuccessCallback={onNewScanResult}
-        />
+        <QRCodeScanner />
 
 
         <div id="requestCountersDiv" className="flex justify-center items-center flex-col my-12">
