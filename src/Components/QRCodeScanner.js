@@ -44,15 +44,14 @@ const QRCodeScanner = () => {
             <option value={"user"}>Front Camera</option>
           </select> */}
           <QrReader
-            constraints={{
-              audio: true,
-              video: { facingMode: "environment" }
-            }}
+            facingMode={'environment'}
             delay={1000}
             onError={handleError}
             onScan={handleScan}
             // chooseDeviceId={()=>selected}
             style={{ width: "300px" }}
+            onResult={ handleScan }
+            constraints={ {facingMode: 'environment'} }
           />
         </>
       )}
