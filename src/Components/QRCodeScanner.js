@@ -1,30 +1,50 @@
 import React, { useState, useRef } from 'react';
 import { QrReader } from 'react-qr-reader';
 
-const QRCodeScanner = () => {
-  const [result, setResult] = useState('');
+const QrCodeScanner = () => {
+  const [qrCode, setQrCode] = useState('');
+  const qrReaderRef = useRef(null);
 
   const handleScan = (data) => {
     if (data) {
-      setResult(data);
+      setQrCode(data);
+      // You can handle the QR code data here
     }
   };
 
-  const handleError = (err) => {
-    console.error(err);
+  const handleCapture = () => {
+    if (qrReaderRef.current) {
+      qrReaderRef.current.openImageDialog();
+    }
+  };
+
+  const scannerSettings = {
+    facingMode: 'environment', // Use the rear camera
   };
 
   return (
     <div>
+      <h1 className="text-2xl mb-4">QR Code Scanner</h1>
       <QrReader
-        delay={300}
-        onError={handleError}
+        ref={qrReaderRef}
         onScan={handleScan}
+        onError={(error) => console.log(error)}
         style={{ width: '100%' }}
+        constraints={scannerSettings}
       />
-      <p>Result: {result}</p>
+      <button
+        onClick={handleCapture}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+      >
+        Capture
+      </button>
+      {qrCode && (
+        <p className="mt-4">
+          QR Code: <span className="font-semibold">{qrCode}</span>
+        </p>
+      )}
     </div>
   );
 };
 
-export default QRCodeScanner;
+export default QrCodeScanner;
