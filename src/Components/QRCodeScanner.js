@@ -42,6 +42,7 @@ const QRCodeScanner = () => {
             onError={handleError}
             onScan={handleScan}
             style={{ width: "300px" }}
+            onResult={handleScan}
             constraints={{ facingMode: "environment" }}
           />
         </>
