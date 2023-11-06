@@ -29,6 +29,7 @@ function HomePage() {
         <h1>QR Code Scanner</h1>
         <QRCodeScanner />
 
+
         <div id="requestCountersDiv" className="flex justify-center items-center flex-col my-12">
           <p className="mb-0 text-[2rem] font-bold" id="requestCounters">12,306,115</p>
           <p className="mb-0 text-[1.75rem] font-bold">عدد التحريات</p>
