@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { QrReader } from 'react-qr-reader';
 
 const QRCodeScanner = React.forwardRef((props, ref) => {
   const [qrscan, setQrscan] = useState('No result');
   const [scanning, setScanning] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const qrRef = ref || useRef(null); // Use the forwarded ref or create a new one
+  const qrRef = ref || useRef(null);
 
   const handleScan = (data) => {
     if (data) {
@@ -16,6 +16,26 @@ const QRCodeScanner = React.forwardRef((props, ref) => {
   const handleError = (err) => {
     console.error(err);
   };
+
+  useEffect(() => {
+    // Get user media with specific constraints to choose the rear camera
+    const constraints = {
+      video: {
+        facingMode: 'environment', // Use 'environment' for rear camera
+      },
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints)
+      .then((stream) => {
+        // Attach the stream to the QR code scanner
+        qrRef.current.openImageDialog = () => {};
+        qrRef.current.handleUserMedia(null, stream);
+      })
+      .catch((error) => {
+        console.error('Error accessing the rear camera:', error);
+      });
+
+  }, [qrRef]);
 
   const startScanning = () => {
     setScanning(true);
@@ -53,11 +73,11 @@ const QRCodeScanner = React.forwardRef((props, ref) => {
             style={{ height: 250, width: 250 }}
           />
           {scanButton}
+          <p>{qrscan}</p>
         </div>
       ) : (
         scanButton
       )}
-      <p>{qrscan}</p>
     </div>
   );
 });
