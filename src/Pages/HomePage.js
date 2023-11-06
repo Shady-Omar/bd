@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from '../assets/logo.svg'
 import QRCodeScanner from '../Components/QRCodeScanner';
 
 function HomePage() {
 
+  const [showScanner, setShowScanner] = useState(false);
+
+  const openScanner = () => {
+    setShowScanner(true);
+  };
 
   return (
     <div className="flex justify-center w-full text-[#212529]">
@@ -27,7 +32,11 @@ function HomePage() {
 
         {/* QR Code Scanner: */}
         <h1>QR Code Scanner</h1>
-        <QRCodeScanner />
+        {showScanner ? (
+          <QRCodeScanner />
+        ) : (
+          <button onClick={openScanner}>Open Camera for QR Code Scan</button>
+        )}
 
 
         <div id="requestCountersDiv" className="flex justify-center items-center flex-col my-12">
