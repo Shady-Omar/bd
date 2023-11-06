@@ -1,50 +1,58 @@
-import React, { useState, useRef } from 'react';
-import { QrReader } from 'react-qr-reader';
+import { Html5QrcodeScanner } from "html5-qrcode";
+import React, { useEffect, useRef } from 'react';
 
-const QrCodeScanner = () => {
-  const [qrCode, setQrCode] = useState('');
-  const qrReaderRef = useRef(null);
+const qrcodeRegionId = "html5qr-code-full-region";
 
-  const handleScan = (data) => {
-    if (data) {
-      setQrCode(data);
-      // You can handle the QR code data here
-    }
-  };
+function Html5QrcodePlugin(props) {
+    const html5QrcodeScannerRef = useRef(null);
 
-  const handleCapture = () => {
-    if (qrReaderRef.current) {
-      qrReaderRef.current.openImageDialog();
-    }
-  };
+    useEffect(() => {
+        function createConfig(props) {
+            const config = {};
+            if (props.fps) {
+                config.fps = props.fps;
+            }
+            if (props.qrbox) {
+                config.qrbox = props.qrbox;
+            }
+            if (props.aspectRatio) {
+                config.aspectRatio = props.aspectRatio;
+            }
+            if (props.disableFlip !== undefined) {
+                config.disableFlip = props.disableFlip;
+            }
+            return config;
+        }
 
-  const scannerSettings = {
-    facingMode: 'environment', // Use the rear camera
-  };
+        const config = createConfig(props);
+        const verbose = props.verbose === true;
 
-  return (
-    <div>
-      <h1 className="text-2xl mb-4">QR Code Scanner</h1>
-      <QrReader
-        ref={qrReaderRef}
-        onScan={handleScan}
-        onError={(error) => console.log(error)}
-        style={{ width: '100%' }}
-        constraints={scannerSettings}
-      />
-      <button
-        onClick={handleCapture}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-      >
-        Capture
-      </button>
-      {qrCode && (
-        <p className="mt-4">
-          QR Code: <span className="font-semibold">{qrCode}</span>
-        </p>
-      )}
-    </div>
-  );
-};
+        // Success callback is required.
+        if (!props.qrCodeSuccessCallback) {
+            throw new Error("qrCodeSuccessCallback is a required callback.");
+        }
 
-export default QrCodeScanner;
+        html5QrcodeScannerRef.current = new Html5QrcodeScanner(
+            qrcodeRegionId,
+            config,
+            verbose
+        );
+        html5QrcodeScannerRef.current.render(
+            props.qrCodeSuccessCallback,
+            props.qrCodeErrorCallback
+        );
+
+        return () => {
+            // componentWillUnmount logic
+            if (html5QrcodeScannerRef.current) {
+                html5QrcodeScannerRef.current.clear().catch(error => {
+                    console.error("Failed to clear html5QrcodeScanner. ", error);
+                });
+            }
+        };
+    }, []);
+
+    return <div id={qrcodeRegionId} />;
+}
+
+export default Html5QrcodePlugin;
