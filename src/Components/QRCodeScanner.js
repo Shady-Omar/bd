@@ -20,6 +20,13 @@ const QRCodeScanner = () => {
     }
   };
 
+  const handleResult = async (scanData) => {
+    setLoadingScan(true);
+    if (scanData && scanData !== "") {
+      setScannedLink(scanData); // Update scanned link state
+    }
+  };
+
   const handleError = (err) => {
     console.error(err);
   };
@@ -42,7 +49,7 @@ const QRCodeScanner = () => {
             onError={handleError}
             onScan={handleScan}
             style={{ width: "300px" }}
-            onResult={handleScan}
+            onResult={handleResult}
             constraints={{ facingMode: "environment" }}
           />
         </>
