@@ -5,8 +5,8 @@ import { QrReader } from "react-qr-reader";
 const QRCodeScanner = () => {
   const [startScan, setStartScan] = useState(false);
   const [loadingScan, setLoadingScan] = useState(false);
-  const [data, setData] = useState("");
-  const [scannedLink, setScannedLink] = useState(""); // New state variable for scanned link
+  const [data, setData] = useState('No result');
+  // const [scannedLink, setScannedLink] = useState(""); // New state variable for scanned link
 
   const handleScan = async (scanData) => {
     setLoadingScan(true);
@@ -14,16 +14,9 @@ const QRCodeScanner = () => {
     if (scanData && scanData !== "") {
       console.log("Scanned:", scanData);
       setData(scanData);
-      setScannedLink(scanData); // Update scanned link state
+      // setScannedLink(scanData); // Update scanned link state
       setStartScan(false);
       setLoadingScan(false);
-    }
-  };
-
-  const handleResult = async (scanData) => {
-    setLoadingScan(true);
-    if (scanData && scanData !== "") {
-      setScannedLink(scanData); // Update scanned link state
     }
   };
 
@@ -49,7 +42,15 @@ const QRCodeScanner = () => {
             onError={handleError}
             onScan={handleScan}
             style={{ width: "300px" }}
-            onResult={handleResult}
+            onResult={(result, error) => {
+              if (!!result) {
+                setData(result?.text);
+              }
+    
+              if (!!error) {
+                console.info(error);
+              }
+            }}
             constraints={{ facingMode: "environment" }}
           />
         </>
@@ -58,7 +59,7 @@ const QRCodeScanner = () => {
       {data !== "" && (
         <div>
           <p>{data}</p>
-          <p>Scanned Link: {scannedLink}</p> {/* Display scanned link */}
+          {/* <p>Scanned Link: {scannedLink}</p> Display scanned link */}
         </div>
       )}
     </div>
