@@ -23,7 +23,7 @@ const QRCodeScanner = () => {
     console.error(err);
   };
   return (
-    <div className="App">
+    <div>
       <h1>Hello CodeSandbox</h1>
       <h2>
         Last Scan:
