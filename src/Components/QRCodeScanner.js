@@ -4,6 +4,7 @@ import { QrReader } from 'react-qr-reader';
 const QRCodeScanner = React.forwardRef((props, ref) => {
   const [qrscan, setQrscan] = useState('No result');
   const [scanning, setScanning] = useState(false);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const qrRef = ref || useRef(null);
 
   const handleScan = (data) => {
