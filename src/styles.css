@@ -160,9 +160,9 @@
     font-size: 1rem;
   }
 
-  section div {
+  /* section div {
     padding: 30% !important;
-  }
+  } */
 
   video {
     height: 205px !important;
