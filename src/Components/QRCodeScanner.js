@@ -53,15 +53,15 @@ const QRCodeScanner = () => {
             }}
             constraints={{ facingMode: "environment" }}
           />
-          {data !== "" && (
-            <div>
-              {data !== "No result"
-                ? <a className=" text-green-600" href={data}>{data}</a>
-                : <p>{data}</p>
-              }
-            </div>
-          )}
         </>
+      )}
+      {data !== "" && (
+        <div>
+          {data !== "No result"
+            ? <a className=" text-green-600" href={data}>{data}</a>
+            : <p>{data}</p>
+          }
+        </div>
       )}
       {loadingScan && <p>Loading</p>}
     </div>
