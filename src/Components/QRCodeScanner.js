@@ -56,7 +56,7 @@ const QRCodeScanner = () => {
           {data !== "" && (
             <div>
               {data !== "No result"
-                ? <a href={data}>{data}</a>
+                ? <a className=" text-green-600" href={data}>{data}</a>
                 : <p>{data}</p>
               }
             </div>
