@@ -40,7 +40,7 @@ const QRCodeScanner = () => {
             delay={1000}
             onError={handleError}
             onScan={handleScan}
-            style={{ width: "100%", borderRadius: '10px', }}
+            style={{ width: "300px" }}
             onResult={(result, error) => {
               if (!!result) {
                 setData(result?.text);
@@ -51,7 +51,7 @@ const QRCodeScanner = () => {
                 console.info(error);
               }
             }}
-            constraints={{ facingMode: "environment"}}
+            constraints={{ facingMode: "environment" }}
           />
           {data !== "" && (
             <div>
