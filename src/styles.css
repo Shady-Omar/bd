@@ -154,18 +154,27 @@
   align-items: center;
 }
 
+section div {
+  padding-top: 30% !important;
+  padding-bottom: 0% !important;
+}
+
+video {
+  height: 300px !important;
+}
+
 @media (max-width: 768px) {
 
   .about-text {
     font-size: 1rem;
   }
 
-  /* section div {
-    padding: 30% !important;
-  } */
+  section div {
+    padding-top: 100% !important;
+  }
 
-  /* video {
-    height: 205px !important;
-  } */
+  video {
+    height: 100% !important;
+  }
 
 }
