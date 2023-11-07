@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
-.App {
+/* .App {
   font-family: "Montserrat", sans-serif;
   text-align: center;
   width: 100%;
@@ -8,7 +8,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .Button {
   color: white;
@@ -152,4 +152,20 @@
   display: flex;
   align-content: center;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+
+  .about-text {
+    font-size: 1rem;
+  }
+
+  section div {
+    padding: 30% !important;
+  }
+
+  video {
+    height: 205px !important;
+  }
+
 }

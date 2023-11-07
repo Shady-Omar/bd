@@ -7,13 +7,13 @@ function HomePage() {
 
   return (
     <div className="flex justify-center w-full text-[#212529]">
-      <div className="container">
+      <div className="container px-3">
         <div className="my-12 flex justify-center items-center">
           <img className="w-[250px]" src={Logo} alt=""/>
         </div>
 
         <div className="mt-0 mb-12 flex justify-center items-center">
-          <p className="text-center mb-0 text-[2em]">A platform promoting conscientious consumerism by identifying/facilitating access to information about which companies do or do not support the illegal Israeli Occupation of Palestine.<br />منصة تدعم الاستهلاك الواعي من خلال تسهيل معرفة الشركات التي تدعم وتلك التي لا تدعم الاحتلال الإسرائيلي الغاشم لفلسطين</p>
+          <p className="text-center mb-0 text-[2em] about-text">A platform promoting conscientious consumerism by identifying/facilitating access to information about which companies do or do not support the illegal Israeli Occupation of Palestine.<br />منصة تدعم الاستهلاك الواعي من خلال تسهيل معرفة الشركات التي تدعم وتلك التي لا تدعم الاحتلال الإسرائيلي الغاشم لفلسطين</p>
         </div>
 
         <form method="post" id="searchForm" width="100%">
@@ -30,8 +30,8 @@ function HomePage() {
 
 
         <div id="requestCountersDiv" className="flex justify-center items-center flex-col my-12">
-          <p className="mb-0 text-[2rem] font-bold" id="requestCounters">12,306,115</p>
-          <p className="mb-0 text-[1.75rem] font-bold">عدد التحريات</p>
+          <p className="mb-0 text-[1.5rem] md:text-[2rem] font-bold" id="requestCounters">12,306,115</p>
+          <p className="mb-0 text-[1.5rem] md:text-[1.75rem] font-bold">عدد التحريات</p>
         </div>
       </div>
     </div>
