@@ -86,10 +86,10 @@ function HomePage() {
         <QRCodeScanner />
 
 
-        {/* <div id="requestCountersDiv" className="flex justify-center items-center flex-col my-12">
-          <p className="mb-0 text-[1.5rem] md:text-[2rem] font-bold" id="requestCounters">12,306,115</p>
+        <div id="requestCountersDiv" className="flex justify-center items-center flex-col my-12">
+          <p className="mb-0 text-[1.5rem] md:text-[2rem] font-bold" id="requestCounters">0</p>
           <p className="mb-0 text-[1.5rem] md:text-[1.75rem] font-bold">عدد التحريات</p>
-        </div> */}
+        </div>
       </div>
     </div>
   );

@@ -1,20 +1,44 @@
 import "../styles.css";
 import { useState } from "react";
 import { QrReader } from "react-qr-reader";
+import { db } from '../firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 const QRCodeScanner = () => {
   const [startScan, setStartScan] = useState(false);
   const [loadingScan, setLoadingScan] = useState(false);
   const [data, setData] = useState('No result');
+  const [boycottText, setboycottText] = useState("");
   // const [scannedLink, setScannedLink] = useState(""); // New state variable for scanned link
 
   const handleScan = async (scanData) => {
     setLoadingScan(true);
-    console.log("Scanned data:", scanData);
-    if (scanData && scanData !== "") {
-      console.log("Scanned:", scanData);
+
+    if (scanData && scanData !== '') {
+      // Query Firestore to check if the received URL exists in the 'companies' collection
+      const companiesCollection = collection(db, 'companies');
+      const q = query(companiesCollection, where('url', '==', scanData));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const boycott = data.boycott; // Assuming "boycott" is a field in your Firestore document
+
+          if (boycott === true) {
+            // If "boycott" field equals true, log a message
+            setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Israeli occupation<br/>هذه الشركة تدعم الاحتلال الإسرائيلي</p>)
+          } else {
+            // "boycott" is not true
+            setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Palestine<br/>هذه الشركة تدعم فلسطين </p>)
+          }
+        });
+      } else {
+        // URL does not exist in Firestore
+        console.log('URL not found in Firestore:', scanData);
+      }
+
       setData(scanData);
-      // setScannedLink(scanData); // Update scanned link state
       setStartScan(false);
       setLoadingScan(false);
     }
@@ -60,7 +84,11 @@ const QRCodeScanner = () => {
         <div>
           {data !== "No result"
             ? <a className=" text-green-600" href={data}>{data}</a>
-            : <p>{data}</p>
+            :
+              <>
+                <p>{data}</p>
+                {boycottText}
+              </>
           }
         </div>
       )}
