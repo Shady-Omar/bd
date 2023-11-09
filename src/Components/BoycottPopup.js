@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import closeIcon from '../assets/close-icon.svg'
 
 const CompanyInfoPopup = ({ company, onClose }) => {
 
-  const [boycottText, setboycottText] = useState("");
+  const [boycottText, setBoycottText] = useState("");
+  const [boycottBorder, setBoycottBorder] = useState("");
   
   useEffect(() => {
     if (company.boycott === true) {
-      console.log('j');
-      setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Israeli occupation<br/>هذه الشركة تدعم الاحتلال الإسرائيلي</p>)
+      setBoycottBorder('0.5rem solid red');
+      setBoycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Israeli occupation<br/>هذه الشركة تدعم الاحتلال الإسرائيلي</p>)
     } else {
-      console.log('k');
-      setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Palestine<br/>هذه الشركة تدعم فلسطين </p>)
+      setBoycottBorder('0.5rem solid green');
+      setBoycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Palestine<br/>هذه الشركة تدعم فلسطين </p>)
     }
   }, []);
   
@@ -22,8 +24,12 @@ const CompanyInfoPopup = ({ company, onClose }) => {
       <div className="fixed inset-0 bg-black opacity-50"></div>
 
       {/* Modal */}
-      <div className="relative bg-white p-6 rounded-lg shadow-md w-[90%] lg:w-[50%]">
-        
+      <div className="relative bg-white p-6 rounded-lg shadow-md w-[90%] lg:w-[50%]" style={{border: boycottBorder }}>
+        <div className="w-full flex justify-end">
+          <button onClick={onClose} type="button" className="scale-150">
+            <img src={closeIcon} alt="" />
+          </button>
+        </div>
         <div className="modal-body" id="resultModalBody">
           <ul className="list-group my-12">
             <li className="list-group-item border-0">
@@ -32,9 +38,7 @@ const CompanyInfoPopup = ({ company, onClose }) => {
             </li>
           </ul>
         </div>
-        <button onClick={onClose} type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">
-          Close
-        </button>
+       
       </div>
     </div>
   );

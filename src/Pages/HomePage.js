@@ -4,6 +4,7 @@ import QRCodeScanner from '../Components/QRCodeScanner';
 import { db } from '../firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import CompanyInfoPopup from "../Components/BoycottPopup";
+import Investigations from "../Components/Investigations";
 
 function HomePage() {
 
@@ -51,7 +52,7 @@ function HomePage() {
           <p className="text-center mb-0 text-[2em] about-text">A platform promoting conscientious consumerism by identifying/facilitating access to information about which companies do or do not support the illegal Israeli Occupation of Palestine.<br />منصة تدعم الاستهلاك الواعي من خلال تسهيل معرفة الشركات التي تدعم وتلك التي لا تدعم الاحتلال الإسرائيلي الغاشم لفلسطين</p>
         </div>
 
-        <form method="post" id="searchForm" width="100%">
+        <form className="relative" method="post" id="searchForm" width="100%">
           <div className="bar">
             <input
               type="text"
@@ -64,15 +65,18 @@ function HomePage() {
             />
           </div>
             {suggestions.length > 0 && (
-              <ul className="mt-2 border rounded shadow-lg absolute z-10 bg-white w-[93%]">
+              <ul className="mt-2 border rounded shadow-lg absolute z-10 bg-white w-full">
                 {suggestions.map((company) => (
-                  <li
+                  <>
+                    <li
                     key={company.id}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-gray-100 cursor-pointer text-left pl-4"
                     onClick={() => isBoycott(company)}
-                  >
-                    {company.name}
-                  </li>
+                    >
+                      {company.name}
+                    </li>
+                    <hr/>
+                  </>
                 ))}
               </ul>
             )}
@@ -86,10 +90,7 @@ function HomePage() {
         <QRCodeScanner />
 
 
-        <div id="requestCountersDiv" className="flex justify-center items-center flex-col my-12">
-          <p className="mb-0 text-[1.5rem] md:text-[2rem] font-bold" id="requestCounters">0</p>
-          <p className="mb-0 text-[1.5rem] md:text-[1.75rem] font-bold">عدد التحريات</p>
-        </div>
+        <Investigations/>
       </div>
     </div>
   );

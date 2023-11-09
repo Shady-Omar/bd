@@ -36,6 +36,7 @@ const QRCodeScanner = () => {
       } else {
         // URL does not exist in Firestore
         console.log('URL not found in Firestore:', scanData);
+        setboycottText(<p className="text-center font-semibold text-md mb-0">Not recognised</p>)
       }
 
       setData(scanData);
