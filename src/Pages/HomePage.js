@@ -87,16 +87,15 @@ function HomePage() {
             {suggestions.length > 0 && (
               <ul className="mt-2 border rounded shadow-lg absolute z-10 bg-white w-full">
                 {suggestions.map((company) => (
-                  <>
+                  <React.Fragment key={company.id}>
                     <li
-                    key={company.id}
                     className="p-2 hover:bg-gray-100 cursor-pointer text-left pl-4"
                     onClick={() => isBoycott(company)}
                     >
                       {company.name}
                     </li>
                     <hr/>
-                  </>
+                  </React.Fragment>
                 ))}
               </ul>
             )}
