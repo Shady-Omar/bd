@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from '../assets/logo.svg'
 import QRCodeScanner from '../Components/QRCodeScanner';
 import { db } from '../firebase';
@@ -13,20 +13,40 @@ function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
 
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      const companiesCollection = collection(db, 'companies');
+      const companiesSnapshot = await getDocs(companiesCollection);
+
+      const companiesData = companiesSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      setCompanies(companiesData);
+    };
+    
+    fetchCompanies();
+  }, []);
+
+
+
   const handleSearch = async (searchText) => {
     setSearch(searchText);
     if (searchText) {
-      // Query Firestore for companies with 'name' containing the searchText
-      const querySnapshot = await getDocs(
-        query(collection(db, 'companies'), where('name', '>=', searchText))
-      );
 
-      const companySuggestions = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setSuggestions(companySuggestions);
+      function queryCompanies(searchText) {
+        return companies.filter(company => company.name.toLowerCase().includes(searchText.toLowerCase()));
+      }
+
+      setSuggestions(queryCompanies(searchText));
     } else {
       setSuggestions([]);
     }
   };
+
 
   const isBoycott = (company) => {
     // Show the popup and set the selected company
