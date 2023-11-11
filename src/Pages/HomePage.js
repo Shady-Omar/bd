@@ -37,7 +37,7 @@ function HomePage() {
 
       setCompanies(companiesData);
     };
-    
+
     fetchCompanies();
   }, []);
 
@@ -48,7 +48,7 @@ function HomePage() {
     if (searchText) {
 
       function queryCompanies(searchText) {
-        return companies.filter(company => company.name.toLowerCase().includes(searchText.toLowerCase()));
+        return companies.filter(company => company.name.toString().toLowerCase().includes(searchText.toLowerCase())).slice(0, 10);
       }
 
       setSuggestions(queryCompanies(searchText));
@@ -89,10 +89,10 @@ function HomePage() {
 
           if (boycott === true) {
             // If "boycott" field equals true, log a message
-            setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Israeli occupation<br/>هذه الشركة تدعم الاحتلال الإسرائيلي</p>)
+            setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Israeli occupation<br />هذه الشركة تدعم الاحتلال الإسرائيلي</p>)
           } else {
             // "boycott" is not true
-            setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Palestine<br/>هذه الشركة تدعم فلسطين </p>)
+            setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Palestine<br />هذه الشركة تدعم فلسطين </p>)
           }
         });
       } else {
@@ -116,7 +116,7 @@ function HomePage() {
     <div className="flex justify-center w-full text-[#212529]">
       <div className="container px-3">
         <div className="my-12 flex justify-center items-center">
-          <img className="w-[200px]" src={Logo} alt=""/>
+          <img className="w-[200px]" src={Logo} alt="" />
         </div>
 
         <div className="mt-0 mb-12 flex justify-center items-center">
@@ -135,31 +135,31 @@ function HomePage() {
               onChange={(e) => handleSearch(e.target.value)}
             />
             <button
-            type="button"
+              type="button"
               className="lens-div"
               onClick={() => {
                 setStartScan(!startScan);
                 setData('No result');
               }}
             >
-              <img className="lens" id="searchByCamera" src={lens} alt="" title="Search by Image"/>
+              <img className="lens" id="searchByCamera" src={lens} alt="" title="Search by Image" />
             </button>
           </div>
-            {suggestions.length > 0 && (
-              <ul className="mt-2 border rounded shadow-lg absolute z-10 bg-white w-full">
-                {suggestions.map((company) => (
-                  <React.Fragment key={company.id}>
-                    <li
+          {suggestions.length > 0 && (
+            <ul className="mt-2 border rounded shadow-lg absolute z-10 bg-white w-full">
+              {suggestions.map((company) => (
+                <React.Fragment key={company.id}>
+                  <li
                     className="p-2 hover:bg-gray-100 cursor-pointer text-left pl-4"
                     onClick={() => isBoycott(company)}
-                    >
-                      {company.name}
-                    </li>
-                    <hr/>
-                  </React.Fragment>
-                ))}
-              </ul>
-            )}
+                  >
+                    {company.name}
+                  </li>
+                  <hr />
+                </React.Fragment>
+              ))}
+            </ul>
+          )}
         </form>
 
         {showPopup && selectedCompany && (
@@ -168,7 +168,7 @@ function HomePage() {
 
         {/* QR Code Scanner: */}
         {/* <QRCodeScanner /> */}
-        
+
         <div>
           {/* <button
             className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-5"
@@ -191,7 +191,7 @@ function HomePage() {
                     setData(result?.text);
                     setStartScan(!startScan);
                   }
-        
+
                   if (!!error) {
                     console.info(error);
                   }
@@ -207,20 +207,20 @@ function HomePage() {
                   {data !== "No result"
                     ? <a className=" text-green-600" href={data}>{data}</a>
                     :
-                      <>
-                        <p>{data}</p>
-                        {boycottText}
-                      </>
+                    <>
+                      <p>{data}</p>
+                      {boycottText}
+                    </>
                   }
                 </div>
               )}
             </>
           )}
-            
+
           {loadingScan && <p>Loading</p>}
         </div>
 
-        <Investigations/>
+        <Investigations />
       </div>
     </div>
   );
