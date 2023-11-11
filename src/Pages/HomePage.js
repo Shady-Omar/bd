@@ -25,21 +25,23 @@ function HomePage() {
   const [boycottText, setboycottText] = useState("");
   // *****
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      const companiesCollection = collection(db, 'companies');
-      const companiesSnapshot = await getDocs(companiesCollection);
+  // Temporary commenting it out: 
 
-      const companiesData = companiesSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+  // useEffect(() => {
+  //   const fetchCompanies = async () => {
+  //     const companiesCollection = collection(db, 'companies');
+  //     const companiesSnapshot = await getDocs(companiesCollection);
 
-      setCompanies(companiesData);
-    };
+  //     const companiesData = companiesSnapshot.docs.map(doc => ({
+  //       id: doc.id,
+  //       ...doc.data()
+  //     }));
 
-    fetchCompanies();
-  }, []);
+  //     setCompanies(companiesData);
+  //   };
+
+  //   fetchCompanies();
+  // }, []);
 
 
 
