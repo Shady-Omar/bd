@@ -10,6 +10,13 @@
   align-items: center;
 } */
 
+body {
+  background: url(./assets/Background_1920.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+}
+
 .Button {
   color: white;
   background-color: blue;
@@ -215,6 +222,13 @@ video {
 
 
 @media (max-width: 768px) {
+
+  body {
+    background: url(./assets/background_1080.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    /* background-attachment: fixed; */
+  }
 
   .about-text {
     font-size: 1rem;
