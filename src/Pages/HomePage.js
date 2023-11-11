@@ -120,7 +120,7 @@ function HomePage() {
         </div>
 
         <div className="mt-0 mb-12 flex justify-center items-center">
-          <p className="text-center mb-0 lg:text-[2em] about-text">A platform promoting conscientious consumerism by identifying/facilitating access to information about which companies do or do not support the illegal Israeli Occupation of Palestine.<br />منصة تدعم الاستهلاك الواعي من خلال تسهيل معرفة الشركات التي تدعم وتلك التي لا تدعم الاحتلال الإسرائيلي الغاشم لفلسطين</p>
+          <p className="text-center mb-0 lg:text-[2em] about-text">A platform encouraging mindful consumer choices by providing information on companies that support the illegal Israeli Occupation of Palestine.<br />منصة تشجع على اتخاذ قرارات استهلاكية مدروسة عن طريق توفير معلومات حول الشركات التي تدعم الاحتلال الإسرائيلي غير القانوني في فلسطين</p>
         </div>
 
         <form className="relative" id="searchForm" width="100%">
@@ -180,7 +180,7 @@ function HomePage() {
             {startScan ? "Stop Scan" : "Start Scan"}
           </button> */}
           {startScan && (
-            <>
+            <div className="mt-5">
               <QrReader
                 delay={1000}
                 onError={handleError}
@@ -198,20 +198,25 @@ function HomePage() {
                 }}
                 constraints={{ facingMode: "environment" }}
               />
-            </>
-          )}
-          {data !== "" && (
-            <div className="mt-5">
-              {data !== "No result"
-                ? <a className=" text-green-600" href={data}>{data}</a>
-                :
-                  <>
-                    <p>{data}</p>
-                    {boycottText}
-                  </>
-              }
             </div>
           )}
+          {startScan && (
+            <>
+              {data !== "" && (
+                <div className="mt-5">
+                  {data !== "No result"
+                    ? <a className=" text-green-600" href={data}>{data}</a>
+                    :
+                      <>
+                        <p>{data}</p>
+                        {boycottText}
+                      </>
+                  }
+                </div>
+              )}
+            </>
+          )}
+            
           {loadingScan && <p>Loading</p>}
         </div>
 
