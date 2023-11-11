@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getCountFromServer } from 'firebase/firestore';
 
 const Investigations = () => {
   const [documentCount, setDocumentCount] = useState(0);
@@ -10,9 +10,9 @@ const Investigations = () => {
 
     const fetchDocumentCount = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'companies'));
-        const count = querySnapshot.size;
-
+        const coll = collection(db, "companies");
+        const snapshot = await getCountFromServer(coll);
+        const count = snapshot.data().count;
         setDocumentCount(count);
       } catch (error) {
         console.error('Error fetching document count:', error);
@@ -25,8 +25,8 @@ const Investigations = () => {
   return (
 
     <div id="requestCountersDiv" className="flex justify-center items-center flex-col my-12">
+      <p className="mb-0 text-[1.5rem] md:text-[1.75rem] font-bold"> Searches so far: </p>
       <p className="mb-0 text-[1.5rem] md:text-[2rem] font-bold" id="requestCounters">{documentCount}</p>
-      <p className="mb-0 text-[1.5rem] md:text-[1.75rem] font-bold">عدد التحريات</p>
     </div>
   );
 };
