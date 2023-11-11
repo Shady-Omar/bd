@@ -4,10 +4,11 @@ import Logo from '../assets/logo.svg'
 import lens from '../assets/lens.svg'
 // import QRCodeScanner from '../Components/QRCodeScanner';
 import { QrReader } from "react-qr-reader";
-import { db } from '../firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db, algoliaIndex } from '../firebase';
+import { collection, getDoc, getDocs, query, where } from 'firebase/firestore';
 import CompanyInfoPopup from "../Components/BoycottPopup";
 import Investigations from "../Components/Investigations";
+import { doc } from "firebase/firestore";
 
 function HomePage() {
 
@@ -25,35 +26,39 @@ function HomePage() {
   const [boycottText, setboycottText] = useState("");
   // *****
 
-  // Temporary commenting it out: 
 
-  // useEffect(() => {
-  //   const fetchCompanies = async () => {
-  //     const companiesCollection = collection(db, 'companies');
-  //     const companiesSnapshot = await getDocs(companiesCollection);
 
-  //     const companiesData = companiesSnapshot.docs.map(doc => ({
-  //       id: doc.id,
-  //       ...doc.data()
-  //     }));
 
-  //     setCompanies(companiesData);
-  //   };
+  async function queryCompanies(searchText) {
+    let companiesData = [];
+    await algoliaIndex
+      .search(searchText, { hitsPerPage: 10 })
+      .then(async ({ hits }) => {
+        for (const hit of hits) {
+          try {
+            const docRef = doc(db, hit.path);
+            const docSnap = await getDoc(docRef);
+            companiesData = ([...companiesData, { id: docSnap.id, ...docSnap.data() }])
+          } catch (error) {
+            console.error('Error fetching document:', error);
+          }
+        }
+      })
+      .catch(err => {
+        console.log(`This is an error ${err}`);
+      });
 
-  //   fetchCompanies();
-  // }, []);
 
+    return companiesData;
+  }
 
 
   const handleSearch = async (searchText) => {
     setSearch(searchText);
     if (searchText) {
-
-      function queryCompanies(searchText) {
-        return companies.filter(company => company.name.toString().toLowerCase().includes(searchText.toLowerCase())).slice(0, 10);
-      }
-
-      setSuggestions(queryCompanies(searchText));
+      const suggestions = await queryCompanies(searchText);
+      console.log(`suggestions count is ${suggestions}`);
+      setSuggestions(suggestions);
     } else {
       setSuggestions([]);
     }
