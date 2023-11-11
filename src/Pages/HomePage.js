@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../styles.css";
 import Logo from '../assets/logo.svg'
 import lens from '../assets/lens.svg'
 // import QRCodeScanner from '../Components/QRCodeScanner';
