@@ -28,6 +28,7 @@ function HomePage() {
 
 
 
+
   async function queryCompanies(searchText) {
     let companiesData = [];
     await algoliaIndex
@@ -46,6 +47,7 @@ function HomePage() {
       .catch(err => {
         console.log(`This is an error ${err}`);
       });
+
 
     return companiesData;
   }
