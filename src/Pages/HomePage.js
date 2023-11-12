@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles.css";
-import Logo from '../assets/logo.svg'
+import Logo from '../assets/logo.png'
 import lens from '../assets/lens.svg'
 // import QRCodeScanner from '../Components/QRCodeScanner';
 import { QrReader } from "react-qr-reader";
@@ -123,14 +123,14 @@ function HomePage() {
     <div className="flex justify-center w-full text-[#212529]">
       <div className="container px-3">
         <div className="my-12 flex justify-center items-center">
-          <img className="w-[200px]" src={Logo} alt="" />
+          <img className="w-1/5" src={Logo} alt="" />
         </div>
 
         <div className="mt-0 mb-12 flex justify-center items-center">
           <p className="text-center mb-0 lg:text-[2em] about-text">A platform encouraging mindful consumer choices by providing information on companies that support the illegal Israeli Occupation of Palestine.<br />منصة تشجع على اتخاذ قرارات استهلاكية مدروسة عن طريق توفير معلومات حول الشركات التي تدعم الاحتلال الإسرائيلي غير القانوني في فلسطين</p>
         </div>
 
-        <form className="relative" id="searchForm" width="100%">
+        <form className="relative rounded-[30px] bg-white" id="searchForm" width="100%">
           <div className="bar">
             <input
               type="text"
@@ -153,7 +153,7 @@ function HomePage() {
             </button>
           </div>
           {suggestions.length > 0 && (
-            <ul className="mt-2 border rounded shadow-lg absolute z-10 bg-white w-full">
+            <ul className="mt-2 border rounded shadow-lg z-10 bg-white w-full">
               {suggestions.map((company) => (
                 <React.Fragment key={company.id}>
                   <li
