@@ -10,11 +10,20 @@
   align-items: center;
 } */
 
-body {
+/* body {
   background: url(./assets/Background_1920.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
+} */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('./assets/top-bg.png');
+  background-size: contain; /* Adjust the size as needed */
+  background-position: top; /* Adjust the position as needed */
+  background-repeat: no-repeat;
 }
 
 
@@ -225,10 +234,12 @@ video {
 @media (max-width: 768px) {
 
   body {
-    background: url(./assets/background_1080.png);
-    background-size: 100% 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url('./assets/bg-top-mob.png');
+    background-size: contain; /* Adjust the size as needed */
+    background-position: top; /* Adjust the position as needed */
     background-repeat: no-repeat;
-    background-attachment: fixed;
   }
 
   .about-text {
