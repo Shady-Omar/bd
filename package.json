@@ -10,6 +10,7 @@
     "firebase": "^10.5.2",
     "html5-qrcode": "^2.3.8",
     "jsqr": "^1.4.0",
+    "lodash.debounce": "^4.0.8",
     "quagga": "^0.12.1",
     "react": "^18.2.0",
     "react-barcode-qrcode-scanner": "^0.1.1",

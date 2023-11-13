@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "../styles.css";
 import Logo from '../assets/logo-cut.png'
 import lens from '../assets/lens.svg'
@@ -9,15 +9,14 @@ import { collection, getDoc, getDocs, query, where } from 'firebase/firestore';
 import CompanyInfoPopup from "../Components/BoycottPopup";
 import Investigations from "../Components/Investigations";
 import { doc } from "firebase/firestore";
+import debounce from 'lodash.debounce';
 
 function HomePage() {
 
-  const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
 
-  const [companies, setCompanies] = useState([]);
 
   // For QR CODE SCAN:
   const [startScan, setStartScan] = useState(false);
@@ -32,7 +31,7 @@ function HomePage() {
   async function queryCompanies(searchText) {
     let companiesData = [];
     await algoliaIndex
-      .search(searchText, { hitsPerPage: 10 })
+      .search(searchText, { hitsPerPage: 5 })
       .then(async ({ hits }) => {
         for (const hit of hits) {
           try {
@@ -54,23 +53,24 @@ function HomePage() {
 
 
   const handleSearch = async (searchText) => {
-    setSearch(searchText);
     if (searchText) {
       const suggestions = await queryCompanies(searchText);
-      console.log(`suggestions count is ${suggestions}`);
+      console.log(`suggestions count is ${suggestions.length}`);
       setSuggestions(suggestions);
     } else {
       setSuggestions([]);
     }
   };
 
+  const debouncedResults = useMemo(() => {
+    return debounce(handleSearch, 300);
+  }, []);
 
   const isBoycott = (company) => {
     // Show the popup and set the selected company
     setShowPopup(true);
     setSelectedCompany(company);
     setSuggestions([]); // Clear the suggestions when opening the modal
-    setSearch('');
   };
 
   const closePopup = () => {
@@ -99,7 +99,7 @@ function HomePage() {
             setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Israeli occupation<br />هذه الشركة تدعم الاحتلال الإسرائيلي</p>)
           } else {
             // "boycott" is not true
-            setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Palestine<br />هذه الشركة تدعم فلسطين </p>)
+            setboycottText(<p className="text-center font-semibold text-lg mb-0">This brand supports the Palestine<br />.هذه الشركة تدعم فلسطين</p>)
           }
         });
       } else {
@@ -127,7 +127,11 @@ function HomePage() {
         </div>
 
         <div className="mt-0 mb-12 flex justify-center items-center">
-          <p className="text-center mb-0 lg:text-[2em] about-text">A platform encouraging mindful consumer choices by providing information on companies that support the illegal Israeli Occupation of Palestine.<br />منصة تشجع على اتخاذ قرارات استهلاكية مدروسة عن طريق توفير معلومات حول الشركات التي تدعم الاحتلال الإسرائيلي غير القانوني في فلسطين</p>
+          <p className="text-center mb-0 lg:text-[2em] about-text " >
+            A platform encouraging mindful consumer choices by providing information on companies that support the illegal Israeli Occupation of Palestine.
+            <br />
+            منصة تشجع على اتخاذ قرارات استهلاكية مدروسة عن طريق توفير معلومات حول الشركات التي تدعم الاحتلال الإسرائيلي غير القانوني في فلسطين.
+          </p>
         </div>
 
         <form className="relative rounded-[30px] bg-white" id="searchForm" width="100%">
@@ -137,20 +141,10 @@ function HomePage() {
               name="search"
               id="searchInput"
               className="searchbar"
-              placeholder="Search here"
-              value={search}
-              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="Search name here"
+              onChange={(e) => debouncedResults(e.target.value)}
             />
-            <button
-              type="button"
-              className="lens-div"
-              onClick={() => {
-                setStartScan(!startScan);
-                setData('No result');
-              }}
-            >
-              <img className="lens" id="searchByCamera" src={lens} alt="" title="Search by Image" />
-            </button>
+
           </div>
           {suggestions.length > 0 && (
             <ul className="mt-2 border rounded shadow-lg z-10 bg-white w-full">
