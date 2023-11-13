@@ -230,6 +230,10 @@ video {
   padding: 1rem;
 }
 
+.rtl {
+  direction: rtl;
+}
+
 
 @media (max-width: 768px) {
 

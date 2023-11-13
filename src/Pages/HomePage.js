@@ -130,7 +130,7 @@ function HomePage() {
           <p className="text-center mb-0 lg:text-[2em] about-text " >
             A platform encouraging mindful consumer choices by providing information on companies that support the illegal Israeli Occupation of Palestine.
             <br />
-            منصة تشجع على اتخاذ قرارات استهلاكية مدروسة عن طريق توفير معلومات حول الشركات التي تدعم الاحتلال الإسرائيلي غير القانوني في فلسطين.
+            <p className="rtl">منصة تشجع على اتخاذ قرارات استهلاكية مدروسة عن طريق توفير معلومات حول الشركات التي تدعم الاحتلال الإسرائيلي غير القانوني في فلسطين.</p>
           </p>
         </div>
 
