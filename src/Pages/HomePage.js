@@ -30,23 +30,24 @@ function HomePage() {
 
   async function queryCompanies(searchText) {
     let companiesData = [];
-    await algoliaIndex
-      .search(searchText, { hitsPerPage: 5 })
-      .then(async ({ hits }) => {
-        for (const hit of hits) {
-          try {
-            const docRef = doc(db, hit.path);
-            const docSnap = await getDoc(docRef);
-            companiesData = ([...companiesData, { id: docSnap.id, ...docSnap.data() }])
-          } catch (error) {
-            console.error('Error fetching document:', error);
-          }
+
+    try {
+      const { hits } = await algoliaIndex.search(searchText, { hitsPerPage: 5 });
+
+      const promises = hits.map(async (hit) => {
+        try {
+          const docRef = doc(db, hit.path);
+          const docSnap = await getDoc(docRef);
+          companiesData = [...companiesData, { id: docSnap.id, ...docSnap.data() }];
+        } catch (error) {
+          console.error('Error fetching document:', error);
         }
-      })
-      .catch(err => {
-        console.log(`This is an error ${err}`);
       });
 
+      await Promise.all(promises);
+    } catch (err) {
+      console.log(`This is an error ${err}`);
+    }
 
     return companiesData;
   }
@@ -126,12 +127,12 @@ function HomePage() {
           <img className="w-1/3 lg:w-1/5" src={Logo} alt="" />
         </div>
 
-        <div className="mt-0 mb-12 flex justify-center items-center">
+        <div className="mt-0 mb-12  justify-center items-center">
           <p className="text-center mb-0 lg:text-[2em] about-text " >
             A platform encouraging mindful consumer choices by providing information on companies that support the illegal Israeli Occupation of Palestine.
-            <br />
-            <p className="rtl">منصة تشجع على اتخاذ قرارات استهلاكية مدروسة عن طريق توفير معلومات حول الشركات التي تدعم الاحتلال الإسرائيلي غير القانوني في فلسطين.</p>
           </p>
+          <p className="rtl text-center mb-0 lg:text-[2em] about-text">منصة تشجع على اتخاذ قرارات استهلاكية مدروسة عن طريق توفير معلومات حول الشركات التي تدعم الاحتلال الإسرائيلي غير القانوني في فلسطين.</p>
+
         </div>
 
         <form className="relative rounded-[30px] bg-white" id="searchForm" width="100%">
