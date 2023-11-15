@@ -5,7 +5,7 @@ import lens from '../assets/lens.svg'
 // import QRCodeScanner from '../Components/QRCodeScanner';
 import { QrReader } from "react-qr-reader";
 import { db, algoliaIndex } from '../firebase';
-import { collection, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDoc, getDocs, query, where, updateDoc, increment } from 'firebase/firestore';
 import CompanyInfoPopup from "../Components/BoycottPopup";
 import Investigations from "../Components/Investigations";
 import { doc } from "firebase/firestore";
@@ -56,7 +56,7 @@ function HomePage() {
   const handleSearch = async (searchText) => {
     if (searchText) {
       const suggestions = await queryCompanies(searchText);
-      console.log(`suggestions count is ${suggestions.length}`);
+      // console.log(`suggestions count is ${suggestions.length}`);
       setSuggestions(suggestions);
     } else {
       setSuggestions([]);
@@ -67,11 +67,25 @@ function HomePage() {
     return debounce(handleSearch, 300);
   }, []);
 
-  const isBoycott = (company) => {
+  const isBoycott = async (company) => {
     // Show the popup and set the selected company
     setShowPopup(true);
     setSelectedCompany(company);
     setSuggestions([]); // Clear the suggestions when opening the modal
+
+    try {
+      
+      const searchCountRef = doc(db, "search-count", "iwUETQIRs5eVUat8FVAQ");
+
+      // Atomically increment the population of the search count by 1.
+      await updateDoc(searchCountRef, {
+          count: increment(1)
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+
   };
 
   const closePopup = () => {
@@ -181,7 +195,7 @@ function HomePage() {
           >
             {startScan ? "Stop Scan" : "Start Scan"}
           </button> */}
-          {startScan && (
+          {/* {startScan && (
             <div className="mt-5">
               <QrReader
                 delay={1000}
@@ -201,8 +215,8 @@ function HomePage() {
                 constraints={{ facingMode: "environment" }}
               />
             </div>
-          )}
-          {startScan && (
+          )} */}
+          {/* {startScan && (
             <>
               {data !== "" && (
                 <div className="mt-5">
@@ -219,7 +233,7 @@ function HomePage() {
             </>
           )}
 
-          {loadingScan && <p>Loading</p>}
+          {loadingScan && <p>Loading</p>} */}
         </div>
 
         <Investigations />
